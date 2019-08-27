@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="profile.css" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+    <title>Messenger</title>
+</head>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script>
+    //alert(document.cookie);
+</script>
+<body>
+    <div id="navpage">
+        <div id="leftside">
+            <span id="chats">Чаты</span>
+            <span>Пользователи</span>
+            <span>Настройки</span>
+        </div>
+        <div id="rightside">
+            <span id="first">unicode256@yandex.by</span>
+            <span id="second">gleb_andreev</span>
+        </div>
+    </div>
+    <div id="dialogs">
+        <input type=text id="search" placeholder="Поиск">
+        <div id="dialogs_section">
+            <div class="dialog_card">
+                <div class="first">
+                    <span class=username>username_username</span>
+                    <span class="online_status">в сети</span>
+                </div>
+                <div class="second">
+                    <span class="counter">2</span>
+                </div>
+                <div class="third">
+                    <span class="message">message</span>
+                    <span class="time">13:15</span>
+                </div>
+
+            </div>
+            <div class="dialog_card">
+                <div class="first">
+                    <span class=username>username_username</span>
+                    <span class="online_statuss">не в сети</span>
+                </div>
+                <div class="second">
+                    <span class="counterr">2</span>
+                </div>
+                <div class="third">
+                    <span class="message">message</span>
+                    <span class="time">15:01</span>
+                </div>
+    
+            </div>
+            <div class="dialog_card">
+                    <div class="first">
+                        <span class=username>username_username</span>
+                        <span class="online_statuss">не в сети</span>
+                    </div>
+                    <div class="second">
+                        <span class="counter">2</span>
+                    </div>
+                    <div class="third">
+                        <span class="message">message</span>
+                        <span class="time">16:48</span>
+                    </div>
+    
+            </div>
+            <div class="dialog_card">
+                    <div class="first">
+                        <span class=username>username_username</span>
+                        <span class="online_status">в сети</span>
+                    </div>
+                    <div class="second">
+                        <span class="counterr">11</span>
+                    </div>
+                    <div class="third">
+                        <span class="message">message</span>
+                        <span class="time">Пн</span>
+                    </div>
+    
+            </div>
+            <div class="dialog_card">
+                    <div class="first">
+                        <span class=username>username_username</span>
+                        <span class="online_status">в сети</span>
+                    </div>
+                    <div class="second">
+                        <span class="counter">2</span>
+                    </div>
+                    <div class="third">
+                        <span class="message">message</span>
+                        <span class="time">25.07.19</span>
+                    </div>
+    
+            </div>
+            <div class="dialog_card">
+                    <div class="first">
+                        <span class=username>username_username</span>
+                        <span class="online_status">в сети</span>
+                    </div>
+                    <div class="second">
+                        <span class="counter">2</span>
+                    </div>
+                    <div class="third">
+                        <span class="message">message</span>
+                        <span class="time">25.07.19</span>
+                    </div>
+    
+            </div>
+            <div class="dialog_card">
+                    <div class="first">
+                        <span class=username>username_username</span>
+                        <span class="online_status">в сети</span>
+                    </div>
+                    <div class="second">
+                        <span class="counter">2</span>
+                    </div>
+                    <div class="third">
+                        <span class="message">message</span>
+                        <span class="time">23.07.19</span>
+                    </div>
+    
+            </div>
+        </div>
+    </div>
+    <div id="scroll_bar">
+            
+    </div>
+    <div id="selected_dialog">
+        <div id="messages">
+            <div class="message_recieved">
+                <span>Приветик</span>
+            </div>
+            <div class="message_sended">
+                <span>Приветик)))</span>
+            </div>
+        </div>
+        <div id="input_message">
+            <input type="text" id="message" placeholder="Напишите сообщение...">
+            <button><span>Отправить</span></button>
+        </div>
+    </div>
+</body>
+</html>

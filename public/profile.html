@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="profile.css" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+    <title>Messenger</title>
+</head>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="//cdn.jsdelivr.net/jquery.color-animation/1/mainfile"></script>
+<script src="jquery.cookie.js"></script>
+<script src="profile.js"></script>
+<body>
+    <div id="navpage">
+        <div id="leftside">
+            <span id="chatsButton" class="navButton" style="color: #19b041">Чаты</span>
+            <span id="usersButton" class="navButton">Пользователи</span>
+            <span>Настройки</span>
+        </div>
+        <div id="rightside">
+            <span id="first"></span>
+            <span id="second"></span>
+        </div>
+    </div>
+    <div id="chats">
+        <div id="dialogs">
+            <input type=text class="search" placeholder="Поиск">
+            <div id="dialogs_section">
+                
+            </div>
+        </div>
+        <div id="scroll_bar">
+                
+        </div>
+        <div id="selected_dialog">
+            <div id="messages">
+                
+            </div>
+            <div id="input_message">
+                <input type="text" id="message" placeholder="Напишите сообщение...">
+                <button id="send_button1">Отправить</button>
+            </div>
+        </div>
+    </div>
+    <div id="users">
+        <input type=text class="search" placeholder="Поиск">
+        <div id="users_section">
+            <!--div class="user_card">
+                <div class="u_first">
+                    <span class=username>username_username</span>
+                    <span class="online_status">в сети</span>
+                </div>
+                <div class="u_second">
+                    <span class="write_message">Написать сообщение</span>
+                </div>
+            </div>
+            <div class="user_card">
+                    <div class="u_first">
+                        <span class=username>username_username</span>
+                        <span class="online_status">в сети</span>
+                    </div>
+                    <div class="u_second">
+                        <span class="write_message">Написать сообщение</span>
+                    </div>
+            </div>
+            <div class="user_card">
+                    <div class="u_first">
+                        <span class=username>username_username</span>
+                        <span class="online_status">в сети</span>
+                    </div>
+                    <div class="u_second">
+                        <span class="write_message">Написать сообщение</span>
+                    </div>
+            </div-->
+        </div>
+    </div>
+    <div id="message_popup">
+        <span id="header">Новое сообщение</span>
+        <span class="username"></span>
+        <span class="online_status">в сети</span>
+        <textarea id="new_message"></textarea>
+        <span id="send_button2">Отправить</span>
+    </div>
+    <div class="bg_popup"></div>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Messenger</title>
+        <style>
+            /* {
+                border: 1px solid black;
+            }*/
+            html {
+                height: 100%;
+                background-color: #f2f8ff;
+            }
+            body {
+                font-family: Helvetica;
+                width: 100%;
+                padding: 0;
+                margin: 0;
+            }
+            p {
+                font-size: 1.5em;
+                font-weight: 100;
+                letter-spacing: 1px;
+                margin: 0;
+            }
+            .form {
+                width: 516px;
+                margin-left: auto;
+                margin-right: auto;
+                text-align: center;
+                font-size: 1.3em;
+                margin-top: 20%;
+            }
+            input, button {
+                text-align: center;
+                padding: 0;
+                font-size: 1.3em;
+                width: 100%;
+                padding: 7px 4px 7px 4px;
+                outline: none;
+                box-sizing: border-box;
+                font-weight: 100;
+                margin-top: 15px;
+                border-radius: 6px;
+                border: 1px solid #e1eaf5;
+                background-color: #e1eaf5;
+            }
+            button { 
+                border-color: #4b90de;
+                background-color: #4b90de;
+                color: white;
+            }
+            button:hover {
+                background-color: #5d9ce3;
+                border-color: #5d9ce3;
+                cursor: pointer;
+            }
+            .password.page {
+                display: none;
+            }
+        </style>
+    </head>
+    <!--script src="/socket.io/socket.io.js"></script-->
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="main.js"></script>
+    <body>
+        <div class="login page">
+            <div class="email page">
+                <div class="form">
+                    <p>Введите адрес эл. почты:</p>
+                    <input class="emailInput" type="text" maxlength="40"><br />
+                    <button>Дальше</button>
+                </div>
+            </div>
+            <div class="password page">
+                <div class="form">
+                    <p>Введите пароль для <span id="login"></span>:</p>
+                    <input class="passwordInput" type="password" maxlength="40"><br />
+                    <button>Войти</button>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
