@@ -214,28 +214,59 @@ app.post('/', sessionChecker, jsonParser, (request, response, next) => {
 
 io.on('connection', (socket) => {
   socket.on('new message', function(currentDialogMeta){
-    
-    Message.create({
-      did: currentDialogMeta.did,
-      sender: currentDialogMeta.user_id,
-      text: currentDialogMeta.message
-    }).then(function() {
-      Dialog.update({
-        send: currentDialogMeta.user_id,
-        recieve: currentDialogMeta.interlocutor_id
-      },
-      {
-        where: {
-          id: currentDialogMeta.did
+    Dialog.findOne({
+      where: {
+        [Op.or]: [{send: currentDialogMeta.user_id}, {recieve: currentDialogMeta.user_id}],
+        [Op.or]: [{send: currentDialogMeta.interlocutor_id}, {recieve: currentDialogMeta.interlocutor_id}],
+      }
+    }).then(function(dialog){
+      console.log('dialog: ');
+      console.log(dialog.dataValues);
+
+      if(!dialog){
+        Dialog.create({
+          status: 0,
+          send: currentDialogMeta.user_id,
+          recieve: currentDialogMeta.interlocutor_id
+        }).then(function(result) {
+          Message.create({
+            did: result.id,
+            sender: currentDialogMeta.user_id,
+            text: currentDialogMeta.message
+          }).then(function() {
+            //io.emit(currentDialogMeta.interlocutor_id, currentDialogMeta);
+            console.log('message could be recieved: ', currentDialogMeta);
+            //io.emit(currentDialogMeta.user_id, currentDialogMeta);
+          })
+        });
+      }
+      else {
+        if(!currentDialogMeta['did']){
+          currentDialogMeta['did'] = dialog.dataValues.id;
         }
-      }).then(function(){
-        console.log('currentDialogMeta: ', currentDialogMeta);
-        console.log('currentDialogMeta-did: ', currentDialogMeta.did);
-        io.emit(currentDialogMeta.interlocutor_id, currentDialogMeta);
-        io.emit(currentDialogMeta.user_id, currentDialogMeta);
-      });
-    })
-    
+        console.log('did = ' + currentDialogMeta['did']);
+        Message.create({
+          did: currentDialogMeta.did,
+          sender: currentDialogMeta.user_id,
+          text: currentDialogMeta.message
+        }).then(function() {
+          Dialog.update({
+            send: currentDialogMeta.user_id,
+            recieve: currentDialogMeta.interlocutor_id
+          },
+          {
+            where: {
+              id: currentDialogMeta.did
+            }
+          }).then(function(){
+            console.log('currentDialogMeta: ', currentDialogMeta);
+            console.log('currentDialogMeta-did: ', currentDialogMeta.did);
+            io.emit(currentDialogMeta.interlocutor_id, currentDialogMeta);
+            io.emit(currentDialogMeta.user_id, currentDialogMeta);
+          });
+        });
+      }
+    });
   });
 })
 

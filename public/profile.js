@@ -191,7 +191,7 @@ const usersPage = () => {
     }
 
     var userCards = [];
-    var newMessageMeta = {};
+    var firstMessageMeta = {};
 
 
     currentPage = 'users';
@@ -220,8 +220,8 @@ const usersPage = () => {
         }
         $('body').on('click', '.write_message', function(){
             console.log($(this).closest('.user_card').attr('data-id'));
-            newMessageMeta['user_id'] = $userName.attr('data-id');
-            newMessageMeta['interlocutor_id'] = $(this).closest('.user_card').attr('data-id');
+            firstMessageMeta['user_id'] = $userName.attr('data-id');
+            firstMessageMeta['interlocutor_id'] = $(this).closest('.user_card').attr('data-id');
             $('#message_popup .username').text($(this).closest('.user_card').find('.username').text());
 
             $('#message_popup').fadeIn(200);
@@ -246,13 +246,15 @@ const usersPage = () => {
     $('#send_button2').on('click', function(){
         if($('#new_message').val()){
             message = $('#new_message').val();
-            newMessageMeta['text'] = message;
+            firstMessageMeta['message'] = message;
+            console.log(firstMessageMeta);
             $('#new_message').val('');
-            socket.emit('new message', newMessageMeta);
-
+            socket.emit('new message', firstMessageMeta);
+            $('.bg_popup').fadeOut(200);
+            $('#message_popup').fadeOut(200);
         }
         else {
-            alert('Вы ничего не написали');
+            console.log('Вы ничего не написали');
         }
     })
 }
