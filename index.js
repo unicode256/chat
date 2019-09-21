@@ -221,7 +221,9 @@ io.on('connection', (socket) => {
       }
     }).then(function(dialog){
       console.log('dialog: ');
-      console.log(dialog.dataValues);
+      if(dialog){
+        console.log(dialog.dataValues);
+      }
 
       if(!dialog){
         Dialog.create({
