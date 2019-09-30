@@ -2,14 +2,19 @@
 <html>
 <head>
     <link href="profile.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="includes/prettify/prettify.css">
+    <link rel="stylesheet" href="jquery.scrollbar.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="jquery.cookie.js"></script>
+    <script type="text/javascript" src="includes/prettify/prettify.js"></script>
+    <script type="text/javascript" src="jquery.scrollbar.js"></script>
+    <script src="../includes/angular.js"></script>
+    <script type="text/javascript" src="profile.js"></script>
     <meta charset="UTF-8">
     <title>Messenger</title>
 </head>
-<script src="/socket.io/socket.io.js"></script>
-<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="//cdn.jsdelivr.net/jquery.color-animation/1/mainfile"></script>
-<script src="jquery.cookie.js"></script>
-<script src="profile.js"></script>
+
 <body>
     <div id="navpage">
         <div id="leftside">
@@ -33,8 +38,10 @@
                 
         </div>
         <div id="selected_dialog">
-            <div id="messages">
+            <div class="messages scrollbar-macosx">
+                <div id="messages">
                 
+                </div>
             </div>
             <div id="input_message">
                 <input type="text" id="message" placeholder="Напишите сообщение...">
@@ -83,4 +90,11 @@
     </div>
     <div class="bg_popup"></div>
 </body>
+<script type="text/javascript">
+    jQuery(document).ready(function(){
+        //$('#dialogs_section').attr('class', 'scrollbar-macosx');
+        //$('#messages').attr('class', 'scrollbar-macosx');
+        jQuery('.scrollbar-macosx').scrollbar();
+    });
+</script>
 </html>

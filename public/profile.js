@@ -1,3 +1,7 @@
+jQuery(document).ready(function(){
+    jQuery('.scrollbar-macosx').scrollbar();
+});
+
 $(function () {
 
 var socket = io();
@@ -16,30 +20,6 @@ var $selectedDialogMessages = $('#messages');
 var $usersSection = $('#users_section');
 var selectedDialogIsOpen = false;
 var currentDialogMeta = {};
-
-const cleanInput = (input) => {
-    return $('<div/>').text(input).html();
-}
-
-const findDidParam = (url) => {
-    var params = url.search.replace('?','').split('&').reduce(function(p,e){
-        var a = e.split('=');
-        p[decodeURIComponent(a[0])] = decodeURIComponent(a[1]);
-        return p;
-    },{});
-    return params['did'];
-}
-
-const updateURL = (paramName, paramValue) => {
-    if (history.pushState) {
-        var baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-        var newUrl = baseUrl + '?' + paramName + '=' + paramValue;
-        history.pushState(null, null, newUrl);
-    }
-    else {
-        console.log('History API не поддерживается');
-    }
-}
 
 //контроллер чаты
 const chatPage = () => {
@@ -119,10 +99,10 @@ const appendDialogs = (array, length) => {
                     $message.clone().appendTo($selectedDialogMessages);
                 }
                 $selectedDialog.fadeIn();
-                console.log($('#messages'));
-                console.log(document.querySelector('#messages').scrollTop);
-                console.log(document.querySelector('#messages').scrollHeight);
-                $('#messages')[0].scrollTop = $('#messages')[0].scrollHeight;
+                console.log('messages: ', $('.scroll-wrapper'));
+                console.log(document.querySelector('.scroll-wrapper').scrollTop);
+                console.log(document.querySelector('.scroll-wrapper').scrollHeight);
+                $('.scroll-wrapper')[0].scrollTop = $('.scroll-wrapper')[0].scrollHeight;
                 selectedDialogIsOpen = true;
             }
         });
