@@ -99,10 +99,10 @@ const appendDialogs = (array, length) => {
                     $message.clone().appendTo($selectedDialogMessages);
                 }
                 $selectedDialog.fadeIn();
-                console.log('messages: ', $('.scroll-wrapper'));
-                console.log(document.querySelector('.scroll-wrapper').scrollTop);
-                console.log(document.querySelector('.scroll-wrapper').scrollHeight);
-                $('.scroll-wrapper')[0].scrollTop = $('.scroll-wrapper')[0].scrollHeight;
+                console.log('messages: ', jQuery('.scroll-wrapper'));
+                console.log('scrollTop: ', document.querySelector('.scroll-wrapper').scrollTop);
+                console.log('Height: ', jQuery('#messages').height());
+                jQuery('.scrollbar-macosx').scrollTop(jQuery('#messages').height());
                 selectedDialogIsOpen = true;
             }
         });
@@ -160,7 +160,6 @@ $sendButton1.on('click', function(){
             alert('Вы ничего не написали');
         }
     }
-    console.log(document.querySelector('#messages').scrollHeight);
 });
 
 // контроллер пользователи
@@ -276,10 +275,14 @@ socket.on(user_id, function(recievedCurrentDialogMeta){
     else {
         $message.attr('class', 'message_recieved');
     }
+    console.log('messages: ', jQuery('.scroll-wrapper'));
+    console.log('scrollTop: ', document.querySelector('.scroll-wrapper').scrollTop);
+    console.log('Height: ', jQuery('#messages').height());
     $message.appendTo($selectedDialogMessages);
-    $selectedDialogMessages.animate({
-        scrollTop: document.querySelector('#messages').scrollHeight
-    }, 1200);
+    jQuery('.scrollbar-macosx').scrollTop(jQuery('#messages').height());
+    /*jQuery('.scrollbar-macosx').animate({
+        scrollTop: jQuery('#messages').height()
+    }, 1200);*/
 });
 
 });

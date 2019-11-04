@@ -297,15 +297,14 @@ a {
 
 .messages {
     width: 100%;
-    border: 1px solid black;
     height: calc(100% - 71px);
+    /*border: 1px solid red;*/
 }
 
 #selected_dialog #messages {
     margin: 0;
     box-sizing: border-box;
     width: 100%;
-    height: calc(100% - 71px);
     background-color: #fff;
     /*border: 1px solid black;*/
     padding-bottom: 5px;
