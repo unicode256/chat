@@ -12,8 +12,6 @@ var email;
 var password;
 var logData;
 
-//var socket = io();
-
 const cleanInput = (input) => {
     return $('<div/>').text(input).html();
 }

@@ -8,6 +8,7 @@ var socket = io();
 var user_id = $.cookie("user_id");
 var request;
 var currentPage = 'chats';
+var $window = $(window);
 var $chatPage = $('#chats');
 var $usersPage = $('#users');
 var $sendButton1 = $('#send_button1');
@@ -21,6 +22,29 @@ var $usersSection = $('#users_section');
 var selectedDialogIsOpen = false;
 var currentDialogMeta = {};
 
+const cleanInput = (input) => {
+    return $('<div/>').text(input).html();
+}
+
+$window.keydown(event => {
+    if(selectedDialogIsOpen){
+        if (!(event.ctrlKey || event.metaKey || event.altKey)) {
+            $('#message').focus();
+        }
+        if(event.which === 13){
+            if($('#message').val()){
+                message = cleanInput($('#message').val()).replace(/ /g, '');
+                if(message != ''){
+                    currentDialogMeta['message'] = message;
+                    $('#message').val('');
+                    socket.emit('new message', currentDialogMeta);
+                }
+            }
+        }
+    }
+    
+});
+
 //контроллер чаты
 const chatPage = () => {
     if(currentPage === 'users'){
@@ -30,6 +54,7 @@ const chatPage = () => {
     currentPage = 'chats';
     console.log(currentPage);
     $chatPage.fadeIn();
+
 
 var $dialogCards = [];
 
@@ -151,13 +176,12 @@ $sendButton1.on('click', function(){
     console.log(currentDialogMeta);
     if(selectedDialogIsOpen ){
         if($('#message').val()){
-            message = $('#message').val();
-            currentDialogMeta['message'] = message;
-            $('#message').val('');
-            socket.emit('new message', currentDialogMeta);
-        }
-        else {
-            alert('Вы ничего не написали');
+            message = cleanInput($('#message').val()).replace(/ /g, '');
+            if(message != ''){
+                currentDialogMeta['message'] = message;
+                $('#message').val('');
+                socket.emit('new message', currentDialogMeta);
+            }
         }
     }
 });
@@ -224,16 +248,13 @@ const usersPage = () => {
 
     $('#send_button2').on('click', function(){
         if($('#new_message').val()){
-            message = $('#new_message').val();
+            message = $('#new_message').val().replace(/ /g, '');
             firstMessageMeta['message'] = message;
             console.log(firstMessageMeta);
             $('#new_message').val('');
             socket.emit('new message', firstMessageMeta);
             $('.bg_popup').fadeOut(200);
             $('#message_popup').fadeOut(200);
-        }
-        else {
-            console.log('Вы ничего не написали');
         }
     })
 }
