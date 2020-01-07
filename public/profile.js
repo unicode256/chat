@@ -26,6 +26,8 @@ const cleanInput = (input) => {
     return $('<div/>').text(input).html();
 }
 
+
+
 $window.keydown(event => {
     if(selectedDialogIsOpen){
         if (!(event.ctrlKey || event.metaKey || event.altKey)) {
@@ -91,7 +93,23 @@ const appendDialogs = (array, length) => {
         $dialogCards.push(dialogCard.clone());
     }
     $('body').on('click', '.dialog_card', function(){
-        request = JSON.stringify({MSSGS: 1, did: $(this).attr('data-did'), user_id: $userName.attr('data-id'), 
+        $selectedDialog.fadeIn(0);
+        let timerID = setInterval(() => {
+            var string = $('div.dialog_preloader').text();
+            string = string + '.';
+            if(string.length < 12){
+                $('div.dialog_preloader').text(string);
+            }
+            else {
+                string = string.substr(0, 9);
+                console.log(string);
+                $('div.dialog_preloader').text(string);
+            }
+        }, 500);
+
+        $('div.bg_dialog_preloader').fadeIn(0);
+        $('div.dialog_preloader').fadeIn(0);
+        request = JSON.stringify({MSSGS: 1, did: $(this).attr('data-did'), user_id: $userName.attr('data-id'),
         interlocutor_id: $(this).attr('data-interlocutor_id')});
         currentDialogMeta['did'] = $(this).attr('data-did');
         currentDialogMeta['interlocutor_id'] = $(this).attr('data-interlocutor_id');
@@ -123,13 +141,17 @@ const appendDialogs = (array, length) => {
                     }
                     $message.clone().appendTo($selectedDialogMessages);
                 }
-                $selectedDialog.fadeIn();
+                
                 console.log('messages: ', jQuery('.scroll-wrapper'));
                 console.log('scrollTop: ', document.querySelector('.scroll-wrapper').scrollTop);
                 console.log('Height: ', jQuery('#messages').height());
+
                 jQuery('.scrollbar-macosx').scrollTop(jQuery('#messages').height());
+                $('div.bg_dialog_preloader').fadeOut(0);
+                $('div.dialog_preloader').fadeOut(0);
+                clearInterval(timerID);
                 selectedDialogIsOpen = true;
-            }
+            },
         });
     });
 }
@@ -261,6 +283,7 @@ const usersPage = () => {
 
 chatPage();//по умолчанию выводится страница с диалогами
 
+//управление контроллерами
 $('.navButton').on('click', function(e){
     if(e.target.id === 'chatsButton' && currentPage !== 'chats'){
         $('#usersButton').animate({color: '#000'}, 100);

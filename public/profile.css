@@ -473,3 +473,30 @@ a {
     background: rgba(0, 0, 0, 0.4);
     display: none;
 }
+
+.bg_dialog_preloader {
+    z-index: 3;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    /* display: none; */
+}
+
+.dialog_preloader {
+    font-size: 1em;
+    font-weight: 100;
+    width: 90px;
+    height: 20px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 4;
+    color: rgb(146, 146, 146);
+    /* border: 1px solid black; */
+}
