@@ -165,7 +165,6 @@ $.ajax({
     dataType: 'json',
     cache: false,
     success: function(result){
-        
         obj = jQuery.parseJSON(result);
         console.log(obj);
         $userEmail.text(obj.userEmail);
@@ -290,7 +289,7 @@ $('.navButton').on('click', function(e){
         $(e.target).animate({color: '#19b041'}, 100);
         chatPage();
     }
-    if(e.target.id === 'usersButton'){
+    if(e.target.id === 'usersButton' && currentPage !== 'users'){
         $('#chatsButton').animate({color: '#000'}, 100);
         $(e.target).animate({color: '#19b041'}, 100);
         usersPage();

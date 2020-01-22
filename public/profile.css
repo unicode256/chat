@@ -125,6 +125,9 @@ a {
     margin-top: 20px;
     overflow: auto;
     height: calc(100% - 61px);
+    box-sizing: border-box;
+    border: 1px solid black;
+    position: relative;
 }
 
 .dialog_card div, .dialog_card span {
@@ -488,7 +491,7 @@ a {
 .dialog_preloader {
     font-size: 1em;
     font-weight: 100;
-    width: 90px;
+    width: 80px;
     height: 20px;
     position: absolute;
     top: 0;
@@ -499,4 +502,33 @@ a {
     z-index: 4;
     color: rgb(146, 146, 146);
     /* border: 1px solid black; */
+}
+
+.bg_dialogs_preloader {
+    z-index: 3;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    display: none;
+}
+
+.dialogs_preloader {
+    font-size: 1em;
+    font-weight: 100;
+    width: 80px;
+    height: 20px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 4;
+    color: rgb(146, 146, 146);
+    display: none;
+
+    border: 1px solid black;
 }
