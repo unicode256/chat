@@ -35,7 +35,7 @@ $window.keydown(event => {
         }
         if(event.which === 13){
             if($('#message').val()){
-                message = cleanInput($('#message').val()).replace(/ /g, '');
+                message = cleanInput($('#message').val().trim());
                 if(message != ''){
                     currentDialogMeta['message'] = message;
                     $('#message').val('');
@@ -55,8 +55,26 @@ const chatPage = () => {
     }
     currentPage = 'chats';
     console.log(currentPage);
-    $chatPage.fadeIn();
 
+    let timerID = setInterval(() => {
+        var string = $('div.dialogs_preloader').text();
+        string = string + '.';
+        if(string.length < 12){
+            $('div.dialogs_preloader').text(string);
+            console.log(string);
+        }
+        else {
+            string = string.substr(0, 9);
+            console.log(string);
+            $('div.dialogs_preloader').text(string);
+        }
+    }, 200);
+
+    $('div.bg_dialogs_preloader').fadeIn(0);
+    $('div.dialogs_preloader').fadeIn(0);
+    
+    $chatPage.fadeIn();
+    
 
 var $dialogCards = [];
 
@@ -92,87 +110,7 @@ const appendDialogs = (array, length) => {
         dialogCard.clone().appendTo($dialogsSection);
         $dialogCards.push(dialogCard.clone());
     }
-    $('body').on('click', '.dialog_card', function(){
-        $selectedDialog.fadeIn(0);
-        let timerID = setInterval(() => {
-            var string = $('div.dialog_preloader').text();
-            string = string + '.';
-            if(string.length < 12){
-                $('div.dialog_preloader').text(string);
-            }
-            else {
-                string = string.substr(0, 9);
-                console.log(string);
-                $('div.dialog_preloader').text(string);
-            }
-        }, 500);
-
-        $('div.bg_dialog_preloader').fadeIn(0);
-        $('div.dialog_preloader').fadeIn(0);
-        request = JSON.stringify({MSSGS: 1, did: $(this).attr('data-did'), user_id: $userName.attr('data-id'),
-        interlocutor_id: $(this).attr('data-interlocutor_id')});
-        currentDialogMeta['did'] = $(this).attr('data-did');
-        currentDialogMeta['interlocutor_id'] = $(this).attr('data-interlocutor_id');
-        currentDialogMeta['user_id'] = $userName.attr('data-id');
-        $.ajax({
-            url: '/profile',
-            type: 'POST',
-            data: request,
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            cache: false,
-            success: function(result){
-                console.log(result);
-                $('div.message_sended').detach();
-                $('div.message_recieved').detach();
-
-                var $message, $message_content;
-                $message = $('<div></div>');
-                $message_content = $('<span></span>');
-                $message_content.appendTo($message);
-            
-                for(let i = 0; i < result.length; i++){
-                    $message_content.text(result[i].text);
-                    if(result[i].interlocutor_is_sender === 1){
-                        $message.attr('class', 'message_recieved');
-                    }
-                    else{
-                        $message.attr('class', 'message_sended');
-                    }
-                    $message.clone().appendTo($selectedDialogMessages);
-                }
-                
-                console.log('messages: ', jQuery('.scroll-wrapper'));
-                console.log('scrollTop: ', document.querySelector('.scroll-wrapper').scrollTop);
-                console.log('Height: ', jQuery('#messages').height());
-
-                jQuery('.scrollbar-macosx').scrollTop(jQuery('#messages').height());
-                $('div.bg_dialog_preloader').fadeOut(0);
-                $('div.dialog_preloader').fadeOut(0);
-                clearInterval(timerID);
-                selectedDialogIsOpen = true;
-            },
-        });
-    });
 }
-
-request = JSON.stringify({SSDT: 1});
-$.ajax({
-    url: '/profile',
-    type: 'POST',
-    data: request,
-    contentType: 'application/json; charset=utf-8',
-    dataType: 'json',
-    cache: false,
-    success: function(result){
-        obj = jQuery.parseJSON(result);
-        console.log(obj);
-        $userEmail.text(obj.userEmail);
-        $userName.text(obj.username);
-        $userName.attr('data-id', obj.userId);
-        $rightside.fadeIn();
-    }
-});
 
 request = JSON.stringify({DLGDT: 1});
 $.ajax({
@@ -186,6 +124,9 @@ $.ajax({
         console.log('result: ', result);
         appendDialogs(result, result.length);
         arrayOfDialogCards = result;
+        $('div.bg_dialogs_preloader').fadeOut(0);
+        $('div.dialogs_preloader').fadeOut(0);
+        clearInterval(timerID);
     }
 });
 
@@ -197,7 +138,7 @@ $sendButton1.on('click', function(){
     console.log(currentDialogMeta);
     if(selectedDialogIsOpen ){
         if($('#message').val()){
-            message = cleanInput($('#message').val()).replace(/ /g, '');
+            message = cleanInput($('#message').val().trim());
             if(message != ''){
                 currentDialogMeta['message'] = message;
                 $('#message').val('');
@@ -220,6 +161,22 @@ const usersPage = () => {
 
     currentPage = 'users';
     console.log(currentPage);
+    let timerID = setInterval(() => {
+        var string = $('div.users_preloader').text();
+        string = string + '.';
+        if(string.length < 12){
+            $('div.users_preloader').text(string);
+            console.log(string);
+        }
+        else {
+            string = string.substr(0, 9);
+            console.log(string);
+            $('div.users_preloader').text(string);
+        }
+    }, 200);
+    $('div.bg_users_preloader').fadeIn(0);
+    $('div.users_preloader').fadeIn(0);
+
     $usersPage.fadeIn();
 
     const appendUsers = (array, length) => {
@@ -242,7 +199,7 @@ const usersPage = () => {
             userCard.clone().appendTo($usersSection);
             userCards.push(userCard.clone());
         }
-        $('body').on('click', '.write_message', function(){
+        $('body').on('click', '.write_message', function(){//вынести это событие
             console.log($(this).closest('.user_card').attr('data-id'));
             firstMessageMeta['user_id'] = $userName.attr('data-id');
             firstMessageMeta['interlocutor_id'] = $(this).closest('.user_card').attr('data-id');
@@ -264,10 +221,13 @@ const usersPage = () => {
         success: function(result){
             console.log('users', result);
             appendUsers(result, result.length);
+            $('div.bg_users_preloader').fadeOut(0);
+            $('div.users_preloader').fadeOut(0);
+            clearInterval(timerID);
         }
     });
 
-    $('#send_button2').on('click', function(){
+    $('#send_button2').on('click', function(){//вынести это событие
         if($('#new_message').val()){
             message = $('#new_message').val().replace(/ /g, '');
             firstMessageMeta['message'] = message;
@@ -303,6 +263,90 @@ $('.bg_popup').on('click', function(){
     $(this).fadeOut(200);
     $('#message_popup').fadeOut(200);
 })
+
+//обработчики событий
+
+$('body').on('click', '.dialog_card', function(){
+    $selectedDialog.fadeIn(0);
+    let timerID = setInterval(() => {
+        var string = $('div.dialog_preloader').text();
+        string = string + '.';
+        if(string.length < 12){
+            $('div.dialog_preloader').text(string);
+            console.log(string);
+        }
+        else {
+            string = string.substr(0, 9);
+            console.log(string);
+            $('div.dialog_preloader').text(string);
+        }
+    }, 200);
+
+    $('div.bg_dialog_preloader').fadeIn(0);
+    $('div.dialog_preloader').fadeIn(0);
+    request = JSON.stringify({MSSGS: 1, did: $(this).attr('data-did'), user_id: $userName.attr('data-id'),
+    interlocutor_id: $(this).attr('data-interlocutor_id')});
+    currentDialogMeta['did'] = $(this).attr('data-did');
+    currentDialogMeta['interlocutor_id'] = $(this).attr('data-interlocutor_id');
+    currentDialogMeta['user_id'] = $userName.attr('data-id');
+    $.ajax({
+        url: '/profile',
+        type: 'POST',
+        data: request,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        cache: false,
+        success: function(result){
+            console.log(result);
+            $('div.message_sended').detach();
+            $('div.message_recieved').detach();
+
+            var $message, $message_content;
+            $message = $('<div></div>');
+            $message_content = $('<span></span>');
+            $message_content.appendTo($message);
+        
+            for(let i = 0; i < result.length; i++){
+                $message_content.text(result[i].text);
+                if(result[i].interlocutor_is_sender === 1){
+                    $message.attr('class', 'message_recieved');
+                }
+                else{
+                    $message.attr('class', 'message_sended');
+                }
+                $message.clone().appendTo($selectedDialogMessages);
+            }
+            
+            console.log('messages: ', jQuery('.scroll-wrapper'));
+            console.log('scrollTop: ', document.querySelector('.scroll-wrapper').scrollTop);
+            console.log('Height: ', jQuery('#messages').height());
+
+            jQuery('.scrollbar-macosx').scrollTop(jQuery('#messages').height());
+            $('div.bg_dialog_preloader').fadeOut(0);
+            $('div.dialog_preloader').fadeOut(0);
+            clearInterval(timerID);
+            selectedDialogIsOpen = true;
+        },
+    });
+});
+
+request = JSON.stringify({SSDT: 1});
+$.ajax({
+    url: '/profile',
+    type: 'POST',
+    data: request,
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    cache: false,
+    success: function(result){
+        obj = jQuery.parseJSON(result);
+        console.log(obj);
+        $userEmail.text(obj.userEmail);
+        $userName.text(obj.username);
+        $userName.attr('data-id', obj.userId);
+        $rightside.fadeIn();
+    }
+});
 
 socket.on(user_id, function(recievedCurrentDialogMeta){
     console.log(currentDialogMeta);
