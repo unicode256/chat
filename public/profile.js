@@ -22,6 +22,8 @@ var $usersSection = $('#users_section');
 var selectedDialogIsOpen = false;
 var currentDialogMeta = {};
 
+var $dialogCards = [];
+
 const cleanInput = (input) => {
     return $('<div/>').text(input).html();
 }
@@ -74,10 +76,6 @@ const chatPage = () => {
     $('div.dialogs_preloader').fadeIn(0);
     
     $chatPage.fadeIn();
-    
-
-var $dialogCards = [];
-
 
 const appendDialogs = (array, length) => {
     var dialogCard, first, second, third, username, onlineStatus, counter, message, time;
@@ -127,6 +125,7 @@ $.ajax({
         $('div.bg_dialogs_preloader').fadeOut(0);
         $('div.dialogs_preloader').fadeOut(0);
         clearInterval(timerID);
+        console.log('dialogCards: ', $dialogCards);
     }
 });
 

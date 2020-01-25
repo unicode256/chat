@@ -134,8 +134,12 @@ app.post('/profile', (req, res) => {
   }
   if(req.body.MSSGS){
     Message.findAll({
+      limit: 30,
       where: {
-        did: req.body.did
+        did: req.body.did,
+        id: {
+          [Op.lte]: req.body.flagForMessages
+        }
       }
     }).then(function(messages){
       for(let i = 0; i < messages.length; i++){
