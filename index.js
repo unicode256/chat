@@ -138,9 +138,12 @@ app.post('/profile', (req, res) => {
       where: {
         did: req.body.did,
         id: {
-          [Op.lte]: req.body.flagForMessages
+          [Op.lt]: 400//req.body.flagForMessages
         }
-      }
+      },
+      order: [
+        ['id', 'DESC']
+      ]
     }).then(function(messages){
       for(let i = 0; i < messages.length; i++){
         if(messages[i].sender === req.session.user.id){

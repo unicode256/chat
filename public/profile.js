@@ -23,6 +23,7 @@ var selectedDialogIsOpen = false;
 var currentDialogMeta = {};
 
 var $dialogCards = [];
+var dialogCardObject = {};
 
 const cleanInput = (input) => {
     return $('<div/>').text(input).html();
@@ -106,6 +107,7 @@ const appendDialogs = (array, length) => {
         second.appendTo(dialogCard);
         third.appendTo(dialogCard);
         dialogCard.clone().appendTo($dialogsSection);
+        dialogCardObject['dialog_card'] = dialogCard.clone();
         $dialogCards.push(dialogCard.clone());
     }
 }
@@ -305,7 +307,7 @@ $('body').on('click', '.dialog_card', function(){
             $message_content = $('<span></span>');
             $message_content.appendTo($message);
         
-            for(let i = 0; i < result.length; i++){
+            for(let i = result.length-1; i >= 0; i--){
                 $message_content.text(result[i].text);
                 if(result[i].interlocutor_is_sender === 1){
                     $message.attr('class', 'message_recieved');
@@ -316,9 +318,13 @@ $('body').on('click', '.dialog_card', function(){
                 $message.clone().appendTo($selectedDialogMessages);
             }
             
-            console.log('messages: ', jQuery('.scroll-wrapper'));
-            console.log('scrollTop: ', document.querySelector('.scroll-wrapper').scrollTop);
-            console.log('Height: ', jQuery('#messages').height());
+            dialogCardObject['flagForMessage'] = result[result.length-1].id;
+
+            // console.log('messages: ', jQuery('.scroll-wrapper'));
+            // console.log('scrollTop: ', document.querySelector('.scroll-wrapper').scrollTop);
+            // console.log('Height: ', jQuery('#messages').height());
+            console.log('dialogCardObject: ', dialogCardObject);
+
 
             jQuery('.scrollbar-macosx').scrollTop(jQuery('#messages').height());
             $('div.bg_dialog_preloader').fadeOut(0);
