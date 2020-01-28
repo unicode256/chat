@@ -22,8 +22,7 @@ var $usersSection = $('#users_section');
 var selectedDialogIsOpen = false;
 var currentDialogMeta = {};
 
-var $dialogCards = [];
-var dialogCardObject = {};
+var $dialogCards = []; //хэширование диалогов(массив объектов)
 
 const cleanInput = (input) => {
     return $('<div/>').text(input).html();
@@ -49,6 +48,24 @@ $window.keydown(event => {
     }
     
 });
+
+function getMessagesForDialog(request){
+    var resForReturn;
+    $.ajax({
+        url: '/profile',
+        type: 'POST',
+        data: request,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        cache: false,
+        async: false,
+        success: function(result){
+            console.log('res: ', result);
+            resForReturn = result;
+        }
+    });
+    return resForReturn;
+}
 
 //контроллер чаты
 const chatPage = () => {
@@ -79,6 +96,9 @@ const chatPage = () => {
     $chatPage.fadeIn();
 
 const appendDialogs = (array, length) => {
+    var dialogCardObject = {};
+    console.log('dialogCards: ', $dialogCards);
+
     var dialogCard, first, second, third, username, onlineStatus, counter, message, time;
     dialogCard = $('<div class="dialog_card"></div>');
     first = $('<div class="first"></div>');
@@ -107,8 +127,15 @@ const appendDialogs = (array, length) => {
         second.appendTo(dialogCard);
         third.appendTo(dialogCard);
         dialogCard.clone().appendTo($dialogsSection);
+        dialogCardObject['id'] = array[i].did;
+        dialogCardObject['selected'] = 0;
         dialogCardObject['dialog_card'] = dialogCard.clone();
-        $dialogCards.push(dialogCard.clone());
+        $dialogCards[$dialogCards.length] = dialogCardObject;
+        console.log('dialogCards: ', $dialogCards);
+        console.log('dialogCard: ', dialogCardObject['dialog_card']);
+
+        // console.log('did: ', array[i].did);
+        dialogCardObject = {};
     }
 }
 
@@ -127,7 +154,7 @@ $.ajax({
         $('div.bg_dialogs_preloader').fadeOut(0);
         $('div.dialogs_preloader').fadeOut(0);
         clearInterval(timerID);
-        console.log('dialogCards: ', $dialogCards);
+        // console.log('dialogCards: ', $dialogCards);
     }
 });
 
@@ -285,20 +312,25 @@ $('body').on('click', '.dialog_card', function(){
 
     $('div.bg_dialog_preloader').fadeIn(0);
     $('div.dialog_preloader').fadeIn(0);
-    request = JSON.stringify({MSSGS: 1, did: $(this).attr('data-did'), user_id: $userName.attr('data-id'),
-    interlocutor_id: $(this).attr('data-interlocutor_id')});
     currentDialogMeta['did'] = $(this).attr('data-did');
     currentDialogMeta['interlocutor_id'] = $(this).attr('data-interlocutor_id');
     currentDialogMeta['user_id'] = $userName.attr('data-id');
-    $.ajax({
-        url: '/profile',
-        type: 'POST',
-        data: request,
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
-        cache: false,
-        success: function(result){
-            console.log(result);
+
+    //поиск нажатого диалога в массиве диалогов
+    for(let i = 0; i < $dialogCards.length; i++){
+        if($dialogCards[i].id == currentDialogMeta.did){
+            request = JSON.stringify({MSSGS: 1, did: $(this).attr('data-did'), user_id: $userName.attr('data-id'),
+            interlocutor_id: $(this).attr('data-interlocutor_id'), flag_for_message: $dialogCards[i]['flagForMessage']});
+            break;
+        }
+    }
+
+
+    var result;
+    result = getMessagesForDialog(request);
+
+    
+            console.log('ress', result);
             $('div.message_sended').detach();
             $('div.message_recieved').detach();
 
@@ -317,22 +349,27 @@ $('body').on('click', '.dialog_card', function(){
                 }
                 $message.clone().appendTo($selectedDialogMessages);
             }
-            
-            dialogCardObject['flagForMessage'] = result[result.length-1].id;
 
+            //поиск нажатого диалога в массиве
+            for(let i = 0; i < $dialogCards.length; i++){
+                if($dialogCards[i].id == currentDialogMeta.did){
+                    $dialogCards[i]['flagForMessage'] = result[result.length-1].id;
+                    break;
+                }
+            }
+
+            // dialogCardObject['flagForMessage'] = result[result.length-1].id;
             // console.log('messages: ', jQuery('.scroll-wrapper'));
             // console.log('scrollTop: ', document.querySelector('.scroll-wrapper').scrollTop);
             // console.log('Height: ', jQuery('#messages').height());
-            console.log('dialogCardObject: ', dialogCardObject);
-
+            // console.log('dialogCards: ', $dialogCards);
+            console.log('pressed dialog from hash: ', $dialogCards);
 
             jQuery('.scrollbar-macosx').scrollTop(jQuery('#messages').height());
             $('div.bg_dialog_preloader').fadeOut(0);
             $('div.dialog_preloader').fadeOut(0);
             clearInterval(timerID);
             selectedDialogIsOpen = true;
-        },
-    });
 });
 
 request = JSON.stringify({SSDT: 1});

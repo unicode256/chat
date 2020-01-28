@@ -133,28 +133,34 @@ app.post('/profile', (req, res) => {
     });
   }
   if(req.body.MSSGS){
-    Message.findAll({
-      limit: 30,
-      where: {
-        did: req.body.did,
-        id: {
-          [Op.lt]: 400//req.body.flagForMessages
+    if(req.body.flag_for_message === undefined){
+      console.log('flag: ', req.body.flag_for_message);
+      req.body.flag_for_message = 400;
+    }
+    if(req.body.flag_for_message !== undefined){
+      Message.findAll({
+        limit: 30,
+        where: {
+          did: req.body.did,
+          id: {
+            [Op.lt]: req.body.flag_for_message
+          }
+        },
+        order: [
+          ['id', 'DESC']
+        ]
+      }).then(function(messages){
+        for(let i = 0; i < messages.length; i++){
+          if(messages[i].sender === req.session.user.id){
+            messages[i].dataValues['interlocutor_is_sender'] = 0;
+          }
+          else {
+            messages[i].dataValues['interlocutor_is_sender'] = 1;
+          }
         }
-      },
-      order: [
-        ['id', 'DESC']
-      ]
-    }).then(function(messages){
-      for(let i = 0; i < messages.length; i++){
-        if(messages[i].sender === req.session.user.id){
-          messages[i].dataValues['interlocutor_is_sender'] = 0;
-        }
-        else {
-          messages[i].dataValues['interlocutor_is_sender'] = 1;
-        }
-      }
-      res.send(messages);
-    })
+        res.send(messages);
+      })
+    }
   }
   if(req.body.USRS){
     User.findAll({
